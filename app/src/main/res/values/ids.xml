@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<item name="editText" type="id" />
+	<item name="editText2" type="id" />
+	<item name="button" type="id" />
+	<item name="button2" type="id" />
+	<item name="button6" type="id" />
+	<item name="button4" type="id" />
+	<item name="editText3" type="id" />
+	<item name="button3" type="id" />
+	<item name="button8" type="id" />
+	<item name="textView2" type="id" />
+	<item name="textView3" type="id" />
+	<item name="textView4" type="id" />
+</resources>

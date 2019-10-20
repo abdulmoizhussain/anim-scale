@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".MainActivity">
+
+	<TextView
+		android:id="@+id/textView2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="32dp"
+		android:text="ANIMATOR_DURATION_SCALE: "
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/textView3"
+		android:layout_width="wrap_content"
+		android:layout_height="18dp"
+		android:layout_marginTop="32dp"
+		android:text="WINDOW_ANIMATION_SCALE: "
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+	<TextView
+		android:id="@+id/textView4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="32dp"
+		android:text="TRANSITION_ANIMATION_SCALE: "
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/editText2" />
+
+	<Button
+		android:id="@+id/button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="-set"
+		android:enabled="false"
+		app:layout_constraintBottom_toBottomOf="@+id/editText"
+		app:layout_constraintStart_toEndOf="@+id/editText"
+		app:layout_constraintTop_toTopOf="@+id/editText" />
+
+	<Button
+		android:id="@+id/button4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Default"
+		android:tag="1"
+		android:onClick="setADS"
+		app:layout_constraintBottom_toBottomOf="@+id/editText"
+		app:layout_constraintStart_toEndOf="@+id/button"
+		app:layout_constraintTop_toTopOf="@+id/editText"
+		app:layout_constraintVertical_bias="0.0" />
+
+	<Button
+		android:id="@+id/button6"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Default"
+		android:tag="1"
+		android:onClick="setAWS"
+		app:layout_constraintBottom_toBottomOf="@+id/button2"
+		app:layout_constraintStart_toEndOf="@+id/button2"
+		app:layout_constraintTop_toTopOf="@+id/button2" />
+
+	<Button
+		android:id="@+id/button7"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="0"
+		android:tag="0"
+		android:onClick="setAWS"
+		app:layout_constraintBottom_toBottomOf="@+id/button2"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/button6"
+		app:layout_constraintTop_toTopOf="@+id/button2"
+		app:layout_constraintVertical_bias="0.0" />
+
+	<Button
+		android:id="@+id/button5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="0"
+		android:tag="0"
+		android:onClick="setADS"
+		app:layout_constraintBottom_toBottomOf="@+id/editText"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/button4"
+		app:layout_constraintTop_toTopOf="@+id/editText"
+		app:layout_constraintVertical_bias="0.0" />
+
+	<Button
+		android:id="@+id/button2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="-set"
+		android:enabled="false"
+		app:layout_constraintBottom_toBottomOf="@+id/editText2"
+		app:layout_constraintStart_toEndOf="@+id/editText2"
+		app:layout_constraintTop_toTopOf="@+id/editText2" />
+
+	<Button
+		android:id="@+id/button3"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="-set"
+		android:enabled="false"
+		app:layout_constraintBottom_toBottomOf="@+id/editText3"
+		app:layout_constraintStart_toEndOf="@+id/editText3"
+		app:layout_constraintTop_toTopOf="@+id/editText3" />
+
+	<Button
+		android:id="@+id/button8"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Default"
+		android:tag="1"
+		android:onClick="setTAS"
+		app:layout_constraintBottom_toBottomOf="@+id/editText3"
+		app:layout_constraintStart_toEndOf="@+id/button3"
+		app:layout_constraintTop_toTopOf="@+id/editText3"
+		app:layout_constraintVertical_bias="0.0" />
+
+	<Button
+		android:id="@+id/button9"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="0"
+		android:tag="0"
+		android:onClick="setTAS"
+		app:layout_constraintBottom_toBottomOf="@+id/editText3"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/button8"
+		app:layout_constraintTop_toTopOf="@+id/editText3"
+		app:layout_constraintVertical_bias="0.0" />
+
+	<EditText
+		android:id="@+id/editText"
+		android:layout_width="99dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:ems="10"
+		android:inputType="numberDecimal"
+		android:textAlignment="center"
+		android:text="1"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+	<EditText
+		android:id="@+id/editText2"
+		android:layout_width="99dp"
+		android:layout_height="wrap_content"
+		android:ems="10"
+		android:inputType="numberDecimal"
+		android:text="1"
+		android:textAlignment="center"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+	<EditText
+		android:id="@+id/editText3"
+		android:layout_width="99dp"
+		android:layout_height="wrap_content"
+		android:ems="10"
+		android:inputType="numberDecimal"
+		android:text="1"
+		android:textAlignment="center"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+</android.support.constraint.ConstraintLayout>
