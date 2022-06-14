@@ -1,6 +1,7 @@
 # anim-scale (animation-scale)
 #### To change animation-scale in Android.
 
+--For: Android 4.2 (API 17) till Android 9.0 (API 28)
 ## [Download Now (APK file)][1]
 
 <br/>
