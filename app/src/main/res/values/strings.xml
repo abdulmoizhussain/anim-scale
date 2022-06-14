@@ -1,10 +1,7 @@
 <resources>
-	<string name="app_name">Anim Scale</string>
+    <string name="app_name">Anim Scale</string>
 
-
-	<string name="ANIMATOR_DURATION_SCALE">ANIMATOR_DURATION_SCALE: </string>
-	<string name="WINDOW_ANIMATION_SCALE">WINDOW_ANIMATION_SCALE: </string>
-	<string name="TRANSITION_ANIMATION_SCALE">TRANSITION_ANIMATION_SCALE: </string>
-
-
+    <string name="ANIMATOR_DURATION_SCALE">ANIMATOR_DURATION_SCALE: </string>
+    <string name="WINDOW_ANIMATION_SCALE">WINDOW_ANIMATION_SCALE: </string>
+    <string name="TRANSITION_ANIMATION_SCALE">TRANSITION_ANIMATION_SCALE: </string>
 </resources>
