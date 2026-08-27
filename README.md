@@ -54,4 +54,4 @@ Source:
 <a href="https://stackoverflow.com/a/27816942" target="_blank"> https://stackoverflow.com/a/27816942
 </a>
 
- [1]: https://github.com/abdulmoizhussain/anim-scale/releases/download/1.0.1/AnimScale-v1.0.1.apk
+ [1]: https://github.com/abdulmoizhussain/anim-scale/releases/download/v1.1/AnimScale-v1.1.apk
