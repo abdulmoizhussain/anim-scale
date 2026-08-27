@@ -1,183 +1,189 @@
 package com.example.abdul.animscale;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG_NAME = "console_log_tag";
-    TextView tvADS, tvWAS, tvTAS;
-    EditText etADS, etWAS, etTAS;
+    private TextView animatorCurrentValue;
+    private TextView windowCurrentValue;
+    private TextView transitionCurrentValue;
+    private EditText animatorScaleInput;
+    private EditText windowScaleInput;
+    private EditText transitionScaleInput;
+    private TextView permissionSummaryText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //	https://www.dev2qa.com/how-to-grant-write-settings-permission-in-android/
-        //	https://stackoverflow.com/questions/13045283/write-secure-settings-permission-error-even-when-added-in-manifest
-        //	adb shell pm grant your.package.name android.permission.WRITE_SECURE_SETTINGS
-        //	adb shell pm grant com.example.abdul.animscale android.permission.WRITE_SECURE_SETTINGS
 
-        if (android.os.Build.VERSION.SDK_INT > 23) {
-            if (Settings.System.canWrite(getApplicationContext()) == Boolean.FALSE) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                startActivity(intent);
-            }
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_DENIED) {
-            new AlertDialog.Builder(this)
-                    .setMessage("You don't have WRITE_SECURE_SETTINGS permission! Run following command:\n\n" +
-                            "adb shell pm grant " +
-                            getApplicationContext().getPackageName() +
-                            " android.permission.WRITE_SECURE_SETTINGS")
-                    .show();
-        }
+        animatorCurrentValue = findViewById(R.id.animatorCurrentValue);
+        windowCurrentValue = findViewById(R.id.windowCurrentValue);
+        transitionCurrentValue = findViewById(R.id.transitionCurrentValue);
+        animatorScaleInput = findViewById(R.id.animatorScaleInput);
+        windowScaleInput = findViewById(R.id.windowScaleInput);
+        transitionScaleInput = findViewById(R.id.transitionScaleInput);
+        permissionSummaryText = findViewById(R.id.permissionSummaryText);
 
-//		DevicePolicyManager mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-//		ComponentName mAdminName = new ComponentName(this, MainActivity.class);
-//
-//		if (!mDPM.isAdminActive(mAdminName)) {
-//			// try to become active – must happen here in this activity, to get result
-//			Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-//			intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
-//			intent.putExtra(
-//					DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-//					"Additional text explaining why this needs to be added."
-//			);
-//			startActivityForResult(intent, 1);
-////			startActivityForResult(intent, 1);
-//		} else {
-//			// Already is a device administrator, can do security operations now.
-//			mDPM.lockNow();
-//		}
+        bindScaleControls(
+                R.id.animatorScaleInput,
+                R.id.animatorSetButton,
+                R.id.animatorDefaultButton,
+                R.id.animatorDisableButton,
+                Settings.Global.ANIMATOR_DURATION_SCALE
+        );
+        bindScaleControls(
+                R.id.windowScaleInput,
+                R.id.windowSetButton,
+                R.id.windowDefaultButton,
+                R.id.windowDisableButton,
+                Settings.Global.WINDOW_ANIMATION_SCALE
+        );
+        bindScaleControls(
+                R.id.transitionScaleInput,
+                R.id.transitionSetButton,
+                R.id.transitionDefaultButton,
+                R.id.transitionDisableButton,
+                Settings.Global.TRANSITION_ANIMATION_SCALE
+        );
 
-        tvADS = findViewById(R.id.textView2);
-        tvWAS = findViewById(R.id.textView3);
-        tvTAS = findViewById(R.id.textView4);
+        findViewById(R.id.permissionCheckButton).setOnClickListener(v -> showPermissionStatus());
+        findViewById(R.id.adbPermissionHintButton).setOnClickListener(v -> showAdbPermissionHint());
+
         showAnimationSettings();
-//		showAnimationSettings(textView);
-//		Settings.Global.putInt(
-//				getContentResolver(),
-//				Settings.Global.ANIMATOR_DURATION_SCALE,
-//				0
-//		);
-//		Settings.Global.putInt(
-//				getContentResolver(),
-//				Settings.Global.WINDOW_ANIMATION_SCALE,
-//				0
-//		);
-//		Settings.Global.putInt(
-//				getContentResolver(),
-//				Settings.Global.TRANSITION_ANIMATION_SCALE,
-//				0
-//		);
-
-//		Settings.Global.ANIMATOR_DURATION_SCALE;
-//		Settings.Global.WINDOW_ANIMATION_SCALE;
-//		Settings.Global.TRANSITION_ANIMATION_SCALE;
-//		Settings.Global.put
+        updatePermissionSummary();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onResume() {
+        super.onResume();
+        if (permissionSummaryText != null) {
+            showAnimationSettings();
+            updatePermissionSummary();
+        }
+    }
+
+    private void bindScaleControls(
+            int inputId,
+            int applyButtonId,
+            int defaultButtonId,
+            int disableButtonId,
+            String settingKey
+    ) {
+        EditText input = findViewById(inputId);
+        findViewById(applyButtonId).setOnClickListener(v -> applyScaleFromInput(settingKey, input));
+        findViewById(defaultButtonId).setOnClickListener(v -> applyScale(settingKey, 1f));
+        findViewById(disableButtonId).setOnClickListener(v -> applyScale(settingKey, 0f));
+    }
+
+    private boolean hasWriteSecureSettingsPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_SECURE_SETTINGS)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void updatePermissionSummary() {
+        permissionSummaryText.setText(
+                hasWriteSecureSettingsPermission()
+                        ? R.string.permission_ready_summary
+                        : R.string.permission_required_summary
+        );
+    }
+
+    private String permissionState(boolean granted) {
+        return getString(granted ? R.string.permission_granted : R.string.permission_not_granted);
+    }
+
+    private void showPermissionStatus() {
+        updatePermissionSummary();
+        String message = getString(
+                R.string.permission_status_message,
+                permissionState(hasWriteSecureSettingsPermission())
+        );
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.permission_status_title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNeutralButton(R.string.adb_permission_hint_button, (dialog, which) -> showAdbPermissionHint())
+                .show();
+    }
+
+    private void showAdbPermissionHint() {
+        String command = getString(R.string.adb_permission_command, getPackageName());
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.adb_permission_hint_title)
+                .setMessage(getString(R.string.adb_permission_hint_message, command))
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void showAnimationSettings() {
-        // Settings.Global.getString
-        // Call requires API level 17
-        tvADS.setText(getString(R.string.ANIMATOR_DURATION_SCALE));
-        tvADS.append(
-                getString(Settings.Global.getString(
-                        getContentResolver(),
-                        Settings.Global.ANIMATOR_DURATION_SCALE
-                ))
-        );
-
-        tvWAS.setText(getString(R.string.WINDOW_ANIMATION_SCALE));
-        tvWAS.append(
-                getString(Settings.Global.getString(
-                        getContentResolver(),
-                        Settings.Global.WINDOW_ANIMATION_SCALE
-                ))
-        );
-
-        tvTAS.setText(getString(R.string.TRANSITION_ANIMATION_SCALE));
-        tvTAS.append(
-                getString(Settings.Global.getString(
-                        getContentResolver(),
-                        Settings.Global.TRANSITION_ANIMATION_SCALE
-                ))
-        );
+        showCurrentValue(animatorCurrentValue, animatorScaleInput, Settings.Global.ANIMATOR_DURATION_SCALE);
+        showCurrentValue(windowCurrentValue, windowScaleInput, Settings.Global.WINDOW_ANIMATION_SCALE);
+        showCurrentValue(transitionCurrentValue, transitionScaleInput, Settings.Global.TRANSITION_ANIMATION_SCALE);
     }
 
-    private String getString(String str) {
-        return str == null ? "null" : str;
+    private void showCurrentValue(TextView view, EditText input, String settingKey) {
+        String value = Settings.Global.getString(getContentResolver(), settingKey);
+        view.setText(getString(R.string.current_scale_format, value == null ? "—" : value));
+        input.setText(value == null ? "" : value);
     }
 
-    public void setADS(View v) {
-        String tag = v.getTag().toString();
-        set(Settings.Global.ANIMATOR_DURATION_SCALE, Integer.parseInt(tag));
-    }
-
-    public void setAWS(View v) {
-        String tag = v.getTag().toString();
-        set(Settings.Global.WINDOW_ANIMATION_SCALE, Integer.parseInt(tag));
-    }
-
-    public void setTAS(View v) {
-        String tag = v.getTag().toString();
-        set(Settings.Global.TRANSITION_ANIMATION_SCALE, Integer.parseInt(tag));
-    }
-
-    private void set(String key, int value) {
-        try {
-            Settings.Global.putInt(getContentResolver(), key, value);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Permission Denial !", Toast.LENGTH_SHORT).show();
+    private void applyScaleFromInput(String settingKey, EditText input) {
+        if (!hasWriteSecureSettingsPermission()) {
+            showPermissionDenied();
+            return;
         }
-        showAnimationSettings();
 
-
-//		// testing 1 2 3
-//		try {
-//			Map<String, Command> map = new HashMap<>();
-//			map.put("", new Command() {
-//				@Override
-//				public void command() {
-//
-//				}
-//			});
-//
-//			Command cmd = map.get("a");
-//			if (cmd != null) {
-//				cmd.command();
-//			}
-//
-//		} catch (NullPointerException e) {
-//			e.printStackTrace();
-//		}
+        String valueText = input.getText().toString().trim();
+        try {
+            float value = Float.parseFloat(valueText);
+            if (Float.isNaN(value) || Float.isInfinite(value) || value < 0) {
+                throw new NumberFormatException("Invalid animation scale");
+            }
+            if (applyScale(settingKey, value)) {
+                input.clearFocus();
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, R.string.invalid_scale_value, Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void CONSOLE_LOG(String string) {
-        Log.i(TAG_NAME, string == null ? "null" : string);
+    private boolean applyScale(String settingKey, float value) {
+        if (!hasWriteSecureSettingsPermission()) {
+            showPermissionDenied();
+            return false;
+        }
+
+        try {
+            if (!Settings.Global.putFloat(getContentResolver(), settingKey, value)) {
+                Toast.makeText(this, R.string.setting_update_failed, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            showAnimationSettings();
+            Toast.makeText(this, R.string.scale_updated, Toast.LENGTH_SHORT).show();
+            return true;
+        } catch (SecurityException e) {
+            showPermissionDenied();
+            return false;
+        } catch (RuntimeException e) {
+            Toast.makeText(this, R.string.setting_update_failed, Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
-    private interface Command {
-        void command();
+    private void showPermissionDenied() {
+        updatePermissionSummary();
+        Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
     }
-    // testing 1 2 3
 }
