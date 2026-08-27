@@ -1,7 +1,32 @@
 <resources>
     <string name="app_name">Anim Scale</string>
 
-    <string name="ANIMATOR_DURATION_SCALE">ANIMATOR_DURATION_SCALE: </string>
-    <string name="WINDOW_ANIMATION_SCALE">WINDOW_ANIMATION_SCALE: </string>
-    <string name="TRANSITION_ANIMATION_SCALE">TRANSITION_ANIMATION_SCALE: </string>
+    <string name="screen_title">Animation scales</string>
+    <string name="screen_description">Adjust Android system animation speed. Choose a quick action or enter your own scale.</string>
+    <string name="animator_scale_title">Animator duration</string>
+    <string name="window_scale_title">Window animation</string>
+    <string name="transition_scale_title">Transition animation</string>
+    <string name="current_scale_format">Current value: %1$s×</string>
+    <string name="custom_scale_hint">Custom scale</string>
+    <string name="custom_scale_examples">Supported values include 0, 0.5, 1, 2, or another non-negative decimal.</string>
+
+    <string name="permission_denied">Permission Denied</string>
+    <string name="apply_button">Apply</string>
+    <string name="default_button">Default (1×)</string>
+    <string name="disable_button">Disable (0×)</string>
+    <string name="invalid_scale_value">Enter a valid non-negative scale</string>
+    <string name="setting_update_failed">Unable to update animation scale</string>
+    <string name="scale_updated">Animation scale updated</string>
+    <string name="check_permissions_button">Check permissions</string>
+    <string name="adb_permission_hint_button">ADB permission hint</string>
+    <string name="permission_status_title">Permission status</string>
+    <string name="permission_card_title">Permission and setup</string>
+    <string name="permission_ready_summary">Ready to change animation scales.</string>
+    <string name="permission_required_summary">ADB permission required. Check status or view setup help.</string>
+    <string name="permission_granted">Granted</string>
+    <string name="permission_not_granted">Not granted</string>
+    <string name="permission_status_message">WRITE_SECURE_SETTINGS: %1$s\n\nThis ADB-granted permission is required to change animation scales.</string>
+    <string name="adb_permission_hint_title">Grant permission with ADB</string>
+    <string name="adb_permission_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="adb_permission_hint_message">Connect the device with USB debugging enabled, then run:\n\n%1$s\n\nRun the permission check again afterwards. The grant can be lost when the app is uninstalled or reinstalled.</string>
 </resources>
